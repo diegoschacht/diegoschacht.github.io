@@ -1,6 +1,8 @@
-# React + Vite
+# React + Vite (SSR)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project now uses Vite's server‑side rendering (SSR) support. `npm run dev` starts an Express server with Vite in middleware mode and renders React on the server.
+
+Use `npm run build` to create the client and server bundles in `dist/client` and `dist/server`. You can then run `npm run serve` to serve the production build.
 
 Currently, two official plugins are available:
 

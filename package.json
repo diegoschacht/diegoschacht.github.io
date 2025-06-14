@@ -4,14 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "node server.mjs",
+    "build": "vite build --outDir dist/client && vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "serve": "NODE_ENV=production node server.mjs",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "express": "^4.21.2",
+    "compression": "^1.8.0",
+    "serve-static": "^2.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
