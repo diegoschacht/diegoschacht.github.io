@@ -1,14 +1,15 @@
-import Head from 'next/head';
+'use client';
+
 import { useRef } from 'react';
-import NavBar from '../components/NavBar';
-import HeroBanner from '../components/HeroBanner';
-import SectionWrapper from '../components/SectionWrapper';
-import SectionTitle from '../components/SectionTitle';
-import Timeline from '../components/Timeline';
-import SkillsGrid from '../components/SkillsGrid';
-import ProjectsGrid from '../components/ProjectsGrid';
-import FilterBar from '../components/FilterBar';
-import ContactForm from '../components/ContactForm';
+import NavBar from '@/components/NavBar';
+import HeroBanner from '@/components/HeroBanner';
+import SectionWrapper from '@/components/SectionWrapper';
+import SectionTitle from '@/components/SectionTitle';
+import Timeline from '@/components/Timeline';
+import SkillsGrid from '@/components/SkillsGrid';
+import ProjectsGrid from '@/components/ProjectsGrid';
+import FilterBar from '@/components/FilterBar';
+import ContactForm from '@/components/ContactForm';
 
 const timelineEvents = [
   { date: '2018-06-01', title: 'Graduated University', description: 'Completed my CS degree.' },
@@ -33,12 +34,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Diego Schacht - Full Stack Engineer</title>
-        <meta name="description" content="Portfolio of Diego Schacht" />
-        <meta property="og:title" content="Diego Schacht - Full Stack Engineer" />
-        <meta property="og:description" content="Portfolio of Diego Schacht" />
-      </Head>
       <NavBar />
       <div id="home">
         <HeroBanner
