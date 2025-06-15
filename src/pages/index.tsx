@@ -34,16 +34,16 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Jane Doe - Full Stack Engineer</title>
-        <meta name="description" content="Portfolio of Jane Doe" />
-        <meta property="og:title" content="Jane Doe - Full Stack Engineer" />
-        <meta property="og:description" content="Portfolio of Jane Doe" />
+        <title>Diego Schacht - Full Stack Engineer</title>
+        <meta name="description" content="Portfolio of Diego Schacht" />
+        <meta property="og:title" content="Diego Schacht - Full Stack Engineer" />
+        <meta property="og:description" content="Portfolio of Diego Schacht" />
       </Head>
       <NavBar />
       <div id="home">
         <HeroBanner
           backgroundImageUrl="/next.svg"
-          title="Hi, I'm Jane Doe, Full‑Stack Engineer"
+          title="Hi, I'm Diego Schacht, Full‑Stack Engineer"
           subtitle="I build scalable web applications."
           ctaText="Explore My Work"
           onCtaClick={() => projectsRef.current?.scrollIntoView({ behavior: 'smooth' })}

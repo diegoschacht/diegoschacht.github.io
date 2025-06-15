@@ -15,7 +15,7 @@ export default function NavBar() {
   return (
     <nav className="sticky top-0 z-20 backdrop-blur bg-white/70 dark:bg-black/70">
       <div className="max-w-5xl mx-auto flex items-center justify-between p-4">
-        <div className="font-bold">My Portfolio</div>
+        <div className="font-bold">Diego Schacht</div>
         <button
           className="md:hidden"
           aria-label="Toggle Menu"
