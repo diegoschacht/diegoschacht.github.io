@@ -37,7 +37,7 @@ export default function Home() {
       <NavBar />
       <div id="home">
         <HeroBanner
-          backgroundImageUrl="/next.svg"
+          backgroundImageUrl="/Diego_Schacht.jpg"
           title="Hi, I'm Diego Schacht, Full‑Stack Engineer"
           subtitle="I build scalable web applications."
           ctaText="Explore My Work"
