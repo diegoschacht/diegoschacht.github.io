@@ -1,24 +1,47 @@
-import '../styles/globals.css';
-import { ReactNode } from 'react';
-import { Geist, Geist_Mono } from 'next/font/google';
+import "../styles/globals.css";
+import type { ReactNode } from "react";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import NavBar from "@/components/nav-bar";
+import Footer from "@/components/footer";
+import { siteConfig } from "@/data/site";
 
-const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' });
-const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' });
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
-export const metadata = {
-  title: 'Diego Schacht - Full Stack Engineer',
-  description: 'Portfolio of Diego Schacht',
-  openGraph: {
-    title: 'Diego Schacht - Full Stack Engineer',
-    description: 'Portfolio of Diego Schacht',
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.title,
+    template: `%s — ${siteConfig.name}`,
   },
+  description: siteConfig.description,
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+    <html lang="en" className="dark">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <NavBar />
+        <main className="min-h-[calc(100vh-8rem)]">{children}</main>
+        <Footer />
       </body>
     </html>
   );
