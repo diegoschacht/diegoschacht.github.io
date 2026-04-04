@@ -2,9 +2,9 @@ import "../styles/globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import NavBar from "@/components/nav-bar";
-import Footer from "@/components/footer";
-import { siteConfig } from "@/data/site";
+import NavBar from "@/features/common/components/nav-bar";
+import Footer from "@/features/common/components/footer";
+import { siteConfig } from "@/features/common/data/site";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({

@@ -1,5 +1,5 @@
 import { Github, Linkedin } from "lucide-react";
-import { siteConfig } from "@/data/site";
+import { siteConfig } from "@/features/common/data/site";
 
 export default function Footer() {
   return (

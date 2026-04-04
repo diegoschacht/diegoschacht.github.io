@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Download, Github, Linkedin, ArrowRight } from "lucide-react";
-import { siteConfig } from "@/data/site";
-import { experience } from "@/data/skills";
-import { skillCategories } from "@/data/skills";
+import { siteConfig } from "@/features/common/data/site";
+import { experience } from "@/features/common/data/skills";
+import { skillCategories } from "@/features/common/data/skills";
 
 export const metadata: Metadata = {
   title: "CV",
