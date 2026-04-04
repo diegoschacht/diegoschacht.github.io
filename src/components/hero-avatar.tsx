@@ -13,17 +13,56 @@ const navIcons = [
   { icon: Send, href: "/#contact", label: "Contact" },
 ];
 
-/*
- * Icon positions are percentages in a 400x400 coordinate system.
- * They sit on a right-side semicircle (r = 185, center 200,200) at angles
- * -90°, -30°, 30°, 90° measured from 3-o'clock (60° apart for 4 icons).
- * `transform: translate(-50%,-50%)` centres each 40px circle on the point.
- */
 const iconPositions = [
-  { top: "3.75%", left: "50%" },        // -90° (top)
-  { top: "26.9%", left: "90.1%" },      // -30°
-  { top: "73.1%", left: "90.1%" },      //  30°
-  { top: "96.25%", left: "50%" },       //  90° (bottom)
+  { top: "3.75%", left: "50%" },
+  { top: "26.9%", left: "90.1%" },
+  { top: "73.1%", left: "90.1%" },
+  { top: "96.25%", left: "50%" },
+];
+
+/* Concentric ring configs: radius, dash pattern, rotation direction, delay */
+const rings = [
+  { r: 170, dash: "6 8",  dir: 1,  delay: 0.0, speed: 40 },
+  { r: 182, dash: "3 12", dir: -1, delay: 0.25, speed: 55 },
+  { r: 194, dash: "10 6", dir: 1,  delay: 0.5, speed: 35 },
+];
+
+/* Gauge tick marks on the outermost ring */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
+const tickCount = 60;
+const ticks = Array.from({ length: tickCount }, (_, i) => {
+  const angle = (i / tickCount) * 360;
+  const rad = (angle * Math.PI) / 180;
+  const long = i % 5 === 0;
+  return {
+    angle,
+    x1: r2(200 + (long ? 195 : 197) * Math.cos(rad)),
+    y1: r2(200 + (long ? 195 : 197) * Math.sin(rad)),
+    x2: r2(200 + 202 * Math.cos(rad)),
+    y2: r2(200 + 202 * Math.sin(rad)),
+    long,
+  };
+});
+
+/* Arc segments — 8 segments of ~40° each, with small gaps */
+const arcSegments = Array.from({ length: 8 }, (_, i) => {
+  const startAngle = i * 45 + 3;
+  const endAngle = startAngle + 39;
+  const r = 160;
+  const x1 = r2(200 + r * Math.cos((startAngle * Math.PI) / 180));
+  const y1 = r2(200 + r * Math.sin((startAngle * Math.PI) / 180));
+  const x2 = r2(200 + r * Math.cos((endAngle * Math.PI) / 180));
+  const y2 = r2(200 + r * Math.sin((endAngle * Math.PI) / 180));
+  return { d: `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`, delay: i * 0.12 };
+});
+
+/* Particles — pre-computed for SSR safety */
+const particles = [
+  { angle: 25, dist: 40 }, { angle: 67, dist: 55 }, { angle: 110, dist: 35 },
+  { angle: 145, dist: 60 }, { angle: 190, dist: 45 }, { angle: 220, dist: 50 },
+  { angle: 260, dist: 38 }, { angle: 295, dist: 58 }, { angle: 330, dist: 42 },
+  { angle: 355, dist: 52 }, { angle: 50, dist: 48 }, { angle: 170, dist: 44 },
 ];
 
 export default function HeroAvatar() {
@@ -32,65 +71,132 @@ export default function HeroAvatar() {
 
   return (
     <div ref={ref} className="relative flex items-center justify-center">
-      {/* Container — overflow visible so icons at the edge aren't clipped */}
       <div className="relative h-[320px] w-[320px] overflow-visible lg:h-[400px] lg:w-[400px]">
 
-        {/* SVG Arc — right-side curve passing through all icons */}
+        {/* ── Holographic Boot Sequence HUD ── */}
         <svg
           className="absolute inset-0 h-full w-full overflow-visible"
           viewBox="0 0 400 400"
           fill="none"
         >
           <defs>
-            <filter id="neon-blur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+            <filter id="hud-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
             </filter>
-            <filter id="neon-blur-wide" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <filter id="hud-glow-soft" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
             </filter>
-            {/* Brightness mask: dim at top/bottom, bright in the middle */}
-            <linearGradient id="brightness-grad" gradientUnits="userSpaceOnUse" x1="200" y1="0" x2="200" y2="400">
-              <stop offset="0%" stopColor="white" stopOpacity="0.1" />
-              <stop offset="40%" stopColor="white" stopOpacity="1" />
-              <stop offset="60%" stopColor="white" stopOpacity="1" />
-              <stop offset="100%" stopColor="white" stopOpacity="0.1" />
-            </linearGradient>
-            <mask id="arc-brightness-mask" maskUnits="userSpaceOnUse" x="-50" y="-50" width="500" height="500">
-              <rect x="-50" y="-50" width="500" height="500" fill="url(#brightness-grad)" />
-            </mask>
           </defs>
-          {/*
-           * Arc from (200,15) to (200,385) — a 180° clockwise sweep
-           * on the right side of the photo, through the icon positions.
-           * r=185, centre at (200,200), angles -90° to +90°.
-           *
-           * Arc length ≈ π × 185 ≈ 581px.
-           * The neon pulse is a 160px dash (dim→bright→dim via gradient)
-           * travelling along 581px, so dasharray = "160 421".
-           */}
-          {/* Dim base arc — always visible after draw */}
+
+          {/* ── CONCENTRIC RINGS — expand outward with tick marks ── */}
+          {rings.map((ring, i) => (
+            <motion.g
+              key={i}
+              initial={{ rotate: 0 }}
+              animate={isInView ? { rotate: ring.dir * 360 } : { rotate: 0 }}
+              transition={{
+                duration: ring.speed,
+                ease: "linear",
+                repeat: Infinity,
+                delay: 1.0 + ring.delay,
+              }}
+              style={{ transformOrigin: "200px 200px" }}
+            >
+              <motion.circle
+                cx="200" cy="200" r={ring.r}
+                stroke="var(--color-accent)"
+                strokeWidth={i === 0 ? "1.2" : "0.8"}
+                strokeDasharray={ring.dash}
+                fill="none"
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: i === 0 ? 0.35 : 0.2 } : { scale: 0.6, opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 + ring.delay }}
+                style={{ transformOrigin: "200px 200px" }}
+              />
+            </motion.g>
+          ))}
+
+          {/* Gauge ticks on outermost ring */}
+          {ticks.map((t, i) => (
+            <motion.line
+              key={i}
+              x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
+              stroke="var(--color-accent)"
+              strokeWidth={t.long ? "1.2" : "0.6"}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: t.long ? 0.4 : 0.2 } : { opacity: 0 }}
+              transition={{ duration: 0.3, delay: 0.8 + i * 0.008 }}
+            />
+          ))}
+
+          {/* ── ARC SEGMENTS — draw in sequentially like loading ── */}
+          {arcSegments.map((seg, i) => (
+            <motion.path
+              key={`seg-${i}`}
+              d={seg.d}
+              stroke="var(--color-accent)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={isInView ? { pathLength: 1, opacity: 0.4 } : { pathLength: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut", delay: 0.4 + seg.delay }}
+            />
+          ))}
+
+          {/* ── PARTICLES — scatter outward like holographic static ── */}
+          {particles.map((p, i) => {
+            const rad = (p.angle * Math.PI) / 180;
+            const startR = 120;
+            const endR = startR + p.dist;
+            return (
+              <motion.circle
+                key={`p-${i}`}
+                cx={200 + startR * Math.cos(rad)}
+                cy={200 + startR * Math.sin(rad)}
+                r="1.5"
+                fill="var(--color-accent)"
+                initial={{ opacity: 0, x: 0, y: 0 }}
+                animate={
+                  isInView
+                    ? {
+                        opacity: [0, 0.7, 0],
+                        x: (endR - startR) * Math.cos(rad),
+                        y: (endR - startR) * Math.sin(rad),
+                      }
+                    : { opacity: 0 }
+                }
+                transition={{
+                  duration: 1.5,
+                  delay: 1.0 + i * 0.1,
+                  ease: "easeOut",
+                  opacity: { times: [0, 0.3, 1] },
+                }}
+              />
+            );
+          })}
+
+          {/* ── RIGHT-SIDE ARC (base for nav icons) ── */}
           <motion.path
             d="M 200 15 A 185 185 0 0 1 200 385"
             stroke="var(--color-accent)"
             strokeWidth="1.5"
             strokeLinecap="round"
-            strokeOpacity="0.15"
             fill="none"
             initial={{ pathLength: 0, opacity: 0 }}
-            animate={isInView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-            transition={{ duration: 1.8, ease: "easeInOut", delay: 0.3 }}
+            animate={isInView ? { pathLength: 1, opacity: 0.2 } : { pathLength: 0, opacity: 0 }}
+            transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
           />
-          {/* Neon pulse group — masked so it's dim at top/bottom, bright in the middle */}
-          <g mask="url(#arc-brightness-mask)">
-          {/* Outer neon glow — wide and soft, moves along the arc */}
+
+          {/* Neon pulse traveling along arc */}
           <motion.path
             d="M 200 15 A 185 185 0 0 1 200 385"
             stroke="var(--color-accent)"
-            strokeWidth="10"
+            strokeWidth="6"
             strokeLinecap="round"
             fill="none"
-            filter="url(#neon-blur-wide)"
-            strokeDasharray="160 421"
+            filter="url(#hud-glow)"
+            strokeDasharray="80 501"
             initial={{ strokeDashoffset: 0, opacity: 0 }}
             animate={
               isInView
@@ -100,111 +206,54 @@ export default function HeroAvatar() {
             transition={
               isInView
                 ? {
-                    strokeDashoffset: {
-                      duration: 3.5,
-                      ease: "linear",
-                      repeat: Infinity,
-                      delay: 2.1,
-                    },
-                    opacity: {
-                      duration: 0.4,
-                      delay: 2.1,
-                      times: [0, 0.01, 1],
-                    },
+                    strokeDashoffset: { duration: 3, ease: "linear", repeat: Infinity, delay: 2.8 },
+                    opacity: { duration: 0.4, delay: 2.8, times: [0, 0.01, 1] },
                   }
                 : { duration: 0 }
             }
           />
-          {/* Inner neon glow — tighter, brighter */}
-          <motion.path
-            d="M 200 15 A 185 185 0 0 1 200 385"
-            stroke="var(--color-accent)"
-            strokeWidth="5"
-            strokeLinecap="round"
-            fill="none"
-            filter="url(#neon-blur)"
-            strokeDasharray="160 421"
-            initial={{ strokeDashoffset: 0, opacity: 0 }}
-            animate={
-              isInView
-                ? { strokeDashoffset: -581, opacity: [0, 0.8, 0.8] }
-                : { strokeDashoffset: 0, opacity: 0 }
-            }
-            transition={
-              isInView
-                ? {
-                    strokeDashoffset: {
-                      duration: 3.5,
-                      ease: "linear",
-                      repeat: Infinity,
-                      delay: 2.1,
-                    },
-                    opacity: {
-                      duration: 0.4,
-                      delay: 2.1,
-                      times: [0, 0.01, 1],
-                    },
-                  }
-                : { duration: 0 }
-            }
-          />
-          {/* Core bright pulse — crisp line that travels along the arc */}
           <motion.path
             d="M 200 15 A 185 185 0 0 1 200 385"
             stroke="var(--color-accent)"
             strokeWidth="2"
             strokeLinecap="round"
             fill="none"
-            strokeDasharray="160 421"
+            strokeDasharray="80 501"
             initial={{ strokeDashoffset: 0, opacity: 0 }}
             animate={
               isInView
-                ? { strokeDashoffset: -581, opacity: [0, 1, 1] }
+                ? { strokeDashoffset: -581, opacity: [0, 0.9, 0.9] }
                 : { strokeDashoffset: 0, opacity: 0 }
             }
             transition={
               isInView
                 ? {
-                    strokeDashoffset: {
-                      duration: 3.5,
-                      ease: "linear",
-                      repeat: Infinity,
-                      delay: 2.1,
-                    },
-                    opacity: {
-                      duration: 0.4,
-                      delay: 2.1,
-                      times: [0, 0.01, 1],
-                    },
+                    strokeDashoffset: { duration: 3, ease: "linear", repeat: Infinity, delay: 2.8 },
+                    opacity: { duration: 0.4, delay: 2.8, times: [0, 0.01, 1] },
                   }
                 : { duration: 0 }
             }
           />
-          </g>
-          {/* Dot at arc start (top) */}
+
+          {/* Arc endpoint dots */}
           <motion.circle
-            cx="200"
-            cy="15"
-            r="5"
+            cx="200" cy="15" r="4"
             fill="var(--color-accent)"
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           />
-          {/* Dot at arc end (bottom) */}
           <motion.circle
-            cx="200"
-            cy="385"
-            r="5"
+            cx="200" cy="385" r="4"
             fill="var(--color-accent)"
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-            transition={{ duration: 0.3, delay: 2.0 }}
+            transition={{ duration: 0.3, delay: 1.8 }}
           />
         </svg>
 
-        {/* Circular profile photo */}
-        <div className="absolute inset-[12%] overflow-hidden rounded-full border-2 border-border/30">
+        {/* ── PHOTO ── */}
+        <div className="absolute inset-[12%] overflow-hidden rounded-full border border-accent/20">
           <Image
             src="/Diego_Schacht.jpg"
             alt="Diego Schacht"
@@ -215,7 +264,7 @@ export default function HeroAvatar() {
           />
         </div>
 
-        {/* Navigation icons — positioned on the arc */}
+        {/* ── NAV ICONS — slide in along arc with bounce ── */}
         {navIcons.map((item, i) => (
           <motion.div
             key={item.label}
@@ -224,12 +273,13 @@ export default function HeroAvatar() {
               top: iconPositions[i].top,
               left: iconPositions[i].left,
             }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0.3, x: -20 }}
+            animate={isInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.3, x: -20 }}
             transition={{
-              duration: 0.3,
-              delay: 1.0 + i * 0.15,
-              ease: "easeOut",
+              type: "spring",
+              stiffness: 260,
+              damping: 18,
+              delay: 2.0 + i * 0.15,
             }}
           >
             <div className="relative h-10 w-10">
