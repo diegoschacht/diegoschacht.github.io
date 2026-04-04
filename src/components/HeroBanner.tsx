@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import RevealFx from './RevealFx';
 
 export interface HeroBannerProps {
   backgroundImageUrl: string;
@@ -23,32 +23,37 @@ export default function HeroBanner({
     >
       <div className="flex w-full h-full">
         {/* Left side - Content */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex-1 flex flex-col justify-center items-start px-8 md:px-16 text-white z-10"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">{title}</h1>
-          <p className="text-xl md:text-2xl max-w-xl mb-6">{subtitle}</p>
-          <button
-            aria-label={ctaText}
-            onClick={onCtaClick}
-            className="px-6 py-3 bg-blue-600 rounded shadow transition-transform hover:scale-105"
-          >
-            {ctaText}
-          </button>
-        </motion.div>
+        <div className="flex-1 flex flex-col justify-center items-start px-8 md:px-16 text-white z-10">
+          <RevealFx translateY={20} delay={0} duration={0.8}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">{title}</h1>
+          </RevealFx>
+          
+          <RevealFx translateY={30} delay={0.2} duration={0.8}>
+            <p className="text-xl md:text-2xl max-w-xl mb-6">{subtitle}</p>
+          </RevealFx>
+          
+          <RevealFx translateY={20} delay={0.4} duration={0.8}>
+            <button
+              aria-label={ctaText}
+              onClick={onCtaClick}
+              className="px-6 py-3 bg-white-600 rounded shadow transition-transform hover:scale-105"
+            >
+              {ctaText}
+            </button>
+          </RevealFx>
+        </div>
         
         {/* Right side - Image */}
         <div className="flex-1 relative">
-          <Image
-            src={backgroundImageUrl}
-            alt="Hero background"
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-          />
+          <RevealFx>
+            <Image
+              src={backgroundImageUrl}
+              alt="Hero background"
+              fill
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+          </RevealFx>
           <div className="absolute inset-0 bg-gradient-to-l from-transparent to-black/40" />
         </div>
       </div>
