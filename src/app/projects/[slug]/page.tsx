@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
-import { projects, getProjectBySlug } from "@/data/projects";
+import { projects, getProjectBySlug } from "@/features/projects/data/projects";
 
 interface PageProps {
   params: Promise<{ slug: string }>;

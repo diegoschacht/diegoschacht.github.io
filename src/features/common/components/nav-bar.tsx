@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { siteConfig } from "@/data/site";
+import { cn } from "@/features/utils";
+import { siteConfig } from "@/features/common/data/site";
 
 export default function NavBar() {
   const pathname = usePathname();

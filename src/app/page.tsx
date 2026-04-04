@@ -11,12 +11,12 @@ import {
   Cloud,
   Layers,
 } from "lucide-react";
-import Reveal from "@/components/reveal";
-import HeroAvatar from "@/components/hero-avatar";
-import ProjectCard from "@/components/project-card";
-import { siteConfig } from "@/data/site";
-import { getFeaturedProjects } from "@/data/projects";
-import { skillCategories } from "@/data/skills";
+import Reveal from "@/features/common/components/reveal";
+import HeroAvatar from "@/features/home/components/hero-avatar";
+import ProjectCard from "@/features/common/components/project-card";
+import { siteConfig } from "@/features/common/data/site";
+import { getFeaturedProjects } from "@/features/projects/data/projects";
+import { skillCategories } from "@/features/common/data/skills";
 
 const iconMap: Record<string, React.ReactNode> = {
   Frontend: <Code2 className="h-5 w-5" />,

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { siteConfig } from "@/data/site";
-import { skillCategories } from "@/data/skills";
-import { experience } from "@/data/skills";
+import { siteConfig } from "@/features/common/data/site";
+import { skillCategories } from "@/features/common/data/skills";
+import { experience } from "@/features/common/data/skills";
 
 export const metadata: Metadata = {
   title: "About",
