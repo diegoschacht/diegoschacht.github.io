@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Download, Github, Linkedin, ArrowRight } from "lucide-react";
-import { siteConfig, basePath } from "@/features/common/data/site";
+import { siteConfig } from "@/features/common/data/site";
 import { experience } from "@/features/common/data/skills";
 import { skillCategories } from "@/features/common/data/skills";
 
@@ -22,7 +22,7 @@ export default function CVPage() {
           <p className="text-lg text-muted-foreground">{siteConfig.role}</p>
         </div>
         <a
-          href={`${basePath}/diego-schacht-cv.pdf`}
+          href="/diego-schacht-cv.pdf"
           download
           className="inline-flex items-center gap-2 shrink-0 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
         >

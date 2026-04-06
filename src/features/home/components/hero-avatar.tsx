@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { User, Briefcase, Monitor, Send } from "lucide-react";
-import { basePath } from "@/features/common/data/site";
 
 const navIcons = [
   { icon: User, href: "/about", label: "About" },
@@ -256,7 +255,7 @@ export default function HeroAvatar() {
         {/* ── PHOTO ── */}
         <div className="absolute inset-[12%] overflow-hidden rounded-full border border-accent/20">
           <Image
-            src={`${basePath}/Diego_Schacht.jpg`}
+            src="/Diego_Schacht.jpg"
             alt="Diego Schacht"
             fill
             priority

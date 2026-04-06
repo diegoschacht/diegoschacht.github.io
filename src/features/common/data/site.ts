@@ -1,13 +1,9 @@
-const isProd = process.env.NODE_ENV === "production";
-
-export const basePath = isProd ? "/personal-website" : "";
-
 export const siteConfig = {
   name: "Diego Schacht",
   title: "Diego Schacht — Full-Stack Engineer",
   description:
     "Full-stack software engineer building AI products for enterprise customer experience. Portfolio showcasing projects, skills, and technical depth.",
-  url: "https://diegoschacht.github.io/personal-website",
+  url: "https://diegoschacht.github.io",
   github: "https://github.com/diegoschacht",
   linkedin: "https://linkedin.com/in/diego-schacht",
   role: "Full-Stack Software Engineer",
