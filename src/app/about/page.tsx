@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { siteConfig } from "@/features/common/data/site";
+import { siteConfig, basePath } from "@/features/common/data/site";
 import { skillCategories } from "@/features/common/data/skills";
 import { experience } from "@/features/common/data/skills";
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
       <div className="mb-12 flex flex-col items-start gap-8 sm:flex-row sm:items-center">
         <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full border-2 border-border/40 sm:h-48 sm:w-48">
           <Image
-            src="/Diego_Schacht.jpg"
+            src={`${basePath}/Diego_Schacht.jpg`}
             alt="Diego Schacht"
             fill
             className="object-cover object-[center_20%]"
