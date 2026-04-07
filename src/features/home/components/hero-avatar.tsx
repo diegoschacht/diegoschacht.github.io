@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -68,6 +68,19 @@ const particles = [
 export default function HeroAvatar() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-35% 0px -35% 0px" });
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  // Close expanded nav icon when tapping outside (touch devices only)
+  useEffect(() => {
+    if (expandedIndex === null) return;
+    const handleTouchOutside = (e: TouchEvent) => {
+      if (!(e.target as HTMLElement).closest("[data-nav-icon]")) {
+        setExpandedIndex(null);
+      }
+    };
+    document.addEventListener("touchstart", handleTouchOutside);
+    return () => document.removeEventListener("touchstart", handleTouchOutside);
+  }, [expandedIndex]);
 
   return (
     <div ref={ref} className="relative flex items-center justify-center">
@@ -265,37 +278,61 @@ export default function HeroAvatar() {
         </div>
 
         {/* ── NAV ICONS — slide in along arc with bounce ── */}
-        {navIcons.map((item, i) => (
-          <motion.div
-            key={item.label}
-            className="absolute -translate-x-1/2 -translate-y-1/2"
-            style={{
-              top: iconPositions[i].top,
-              left: iconPositions[i].left,
-            }}
-            initial={{ opacity: 0, scale: 0.3, x: -20 }}
-            animate={isInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.3, x: -20 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 18,
-              delay: 2.0 + i * 0.15,
-            }}
-          >
-            <div className="relative h-10 w-10">
-              <Link
-                href={item.href}
-                aria-label={item.label}
-                className="group absolute left-0 top-0 flex h-10 items-center rounded-full border border-border/60 bg-card/80 px-3 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent hover:text-accent hover:shadow-[0_0_12px_rgba(59,130,246,0.3)]"
-              >
-                <item.icon className="h-4 w-4 shrink-0" />
-                <span className="inline-block max-w-0 overflow-hidden whitespace-nowrap pl-0 text-xs font-medium opacity-0 transition-all duration-500 ease-in-out group-hover:max-w-[80px] group-hover:pl-2 group-hover:opacity-100">
-                  {item.label}
-                </span>
-              </Link>
-            </div>
-          </motion.div>
-        ))}
+        {navIcons.map((item, i) => {
+          const isExpanded = expandedIndex === i;
+          return (
+            <motion.div
+              key={item.label}
+              className="absolute -translate-x-1/2 -translate-y-1/2"
+              style={{
+                top: iconPositions[i].top,
+                left: iconPositions[i].left,
+              }}
+              initial={{ opacity: 0, scale: 0.3, x: -20 }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.3, x: -20 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 18,
+                delay: 2.0 + i * 0.15,
+              }}
+            >
+              <div className="relative h-10 w-10" data-nav-icon>
+                <Link
+                  href={item.href}
+                  aria-label={item.label}
+                  onClick={(e) => {
+                    // On hover-capable devices, let normal link behavior proceed
+                    if (window.matchMedia("(hover: hover)").matches) return;
+                    // Touch: first tap expands, second tap navigates
+                    if (!isExpanded) {
+                      e.preventDefault();
+                      setExpandedIndex(i);
+                    } else {
+                      setExpandedIndex(null);
+                    }
+                  }}
+                  className={`group absolute left-0 top-0 flex h-10 items-center rounded-full border bg-card/80 px-3 backdrop-blur-sm transition-all hover:border-accent hover:text-accent hover:shadow-[0_0_12px_rgba(59,130,246,0.3)] ${
+                    isExpanded
+                      ? "border-accent text-accent shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                      : "border-border/60 text-muted-foreground"
+                  }`}
+                >
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span
+                    className={`inline-block overflow-hidden whitespace-nowrap text-xs font-medium transition-all duration-500 ease-in-out group-hover:max-w-[80px] group-hover:pl-2 group-hover:opacity-100 ${
+                      isExpanded
+                        ? "max-w-[80px] pl-2 opacity-100"
+                        : "max-w-0 pl-0 opacity-0"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
