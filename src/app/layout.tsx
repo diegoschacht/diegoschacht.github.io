@@ -23,6 +23,12 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
+    images: [
+      {
+        url: "/Diego_Schacht.jpg",
+        alt: siteConfig.title,
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
