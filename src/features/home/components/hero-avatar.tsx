@@ -57,13 +57,23 @@ const arcSegments = Array.from({ length: 8 }, (_, i) => {
   return { d: `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`, delay: i * 0.12 };
 });
 
-/* Particles — pre-computed for SSR safety */
+/* Particles — fully pre-computed to avoid SSR/client floating-point mismatches */
+const startR = 120;
 const particles = [
   { angle: 25, dist: 40 }, { angle: 67, dist: 55 }, { angle: 110, dist: 35 },
   { angle: 145, dist: 60 }, { angle: 190, dist: 45 }, { angle: 220, dist: 50 },
   { angle: 260, dist: 38 }, { angle: 295, dist: 58 }, { angle: 330, dist: 42 },
   { angle: 355, dist: 52 }, { angle: 50, dist: 48 }, { angle: 170, dist: 44 },
-];
+].map((p) => {
+  const rad = (p.angle * Math.PI) / 180;
+  const endR = startR + p.dist;
+  return {
+    cx: r2(200 + startR * Math.cos(rad)),
+    cy: r2(200 + startR * Math.sin(rad)),
+    dx: r2((endR - startR) * Math.cos(rad)),
+    dy: r2((endR - startR) * Math.sin(rad)),
+  };
+});
 
 export default function HeroAvatar() {
   const ref = useRef<HTMLDivElement>(null);
@@ -158,15 +168,11 @@ export default function HeroAvatar() {
           ))}
 
           {/* ── PARTICLES — scatter outward like holographic static ── */}
-          {particles.map((p, i) => {
-            const rad = (p.angle * Math.PI) / 180;
-            const startR = 120;
-            const endR = startR + p.dist;
-            return (
+          {particles.map((p, i) => (
               <motion.circle
                 key={`p-${i}`}
-                cx={200 + startR * Math.cos(rad)}
-                cy={200 + startR * Math.sin(rad)}
+                cx={p.cx}
+                cy={p.cy}
                 r="1.5"
                 fill="var(--color-accent)"
                 initial={{ opacity: 0, x: 0, y: 0 }}
@@ -174,8 +180,8 @@ export default function HeroAvatar() {
                   isInView
                     ? {
                         opacity: [0, 0.7, 0],
-                        x: (endR - startR) * Math.cos(rad),
-                        y: (endR - startR) * Math.sin(rad),
+                        x: p.dx,
+                        y: p.dy,
                       }
                     : { opacity: 0 }
                 }
@@ -186,8 +192,7 @@ export default function HeroAvatar() {
                   opacity: { times: [0, 0.3, 1] },
                 }}
               />
-            );
-          })}
+          ))}
 
           {/* ── RIGHT-SIDE ARC (base for nav icons) ── */}
           <motion.path
