@@ -1,0 +1,182 @@
+{
+  "communities": {
+    "0": {
+      "label": "Cluster 0",
+      "members": [
+        "next_env_d"
+      ]
+    },
+    "1": {
+      "label": "Shared Components and Config",
+      "members": [
+        "next_config",
+        "pattern_static_export",
+        "robots_handler",
+        "sitemap_handler",
+        "page_project_detail",
+        "site_siteconfig",
+        "projects_data",
+        "page_about",
+        "page_home",
+        "component_footer",
+        "page_cv",
+        "layout_root",
+        "component_navbar",
+        "page_projects",
+        "skills_experience",
+        "skills_skillcategories",
+        "component_projectcard",
+        "component_heroavatar",
+        "component_reveal",
+        "utils_cn",
+        "projects_project_interface"
+      ]
+    },
+    "2": {
+      "label": "Shared Components and Config",
+      "members": [
+        "robots",
+        "robots_robots",
+        "site",
+        "footer",
+        "nav_bar",
+        "layout",
+        "page",
+        "sitemap",
+        "footer_footer",
+        "nav_bar_navbar",
+        "layout_rootlayout",
+        "hero_avatar",
+        "project_card",
+        "page_generatestaticparams",
+        "skills",
+        "projects",
+        "reveal",
+        "page_generatemetadata",
+        "sitemap_sitemap",
+        "hero_avatar_r2",
+        "hero_avatar_handletouchoutside",
+        "project_card_projectcard",
+        "projects_getprojectbyslug",
+        "projects_getfeaturedprojects",
+        "reveal_reveal"
+      ]
+    },
+    "3": {
+      "label": "App Routes and Pages",
+      "members": [
+        "not_found",
+        "not_found_notfound"
+      ]
+    },
+    "4": {
+      "label": "Cluster 4",
+      "members": [
+        "index",
+        "index_cn"
+      ]
+    },
+    "5": {
+      "label": "App Routes and Pages",
+      "members": [
+        "page_notfound"
+      ]
+    },
+    "6": {
+      "label": "Public Assets",
+      "members": [
+        "readme_project_overview",
+        "photo_diego",
+        "cv_pdf",
+        "readme_project_structure"
+      ]
+    },
+    "7": {
+      "label": "Public Assets",
+      "members": [
+        "readme_tech_stack",
+        "readme_deployment",
+        "logo_vercel",
+        "logo_nextjs"
+      ]
+    },
+    "8": {
+      "label": "Public Assets",
+      "members": [
+        "icon_file"
+      ]
+    },
+    "9": {
+      "label": "Public Assets",
+      "members": [
+        "icon_globe",
+        "icon_window"
+      ]
+    }
+  },
+  "node_community": {
+    "next_env_d": 0,
+    "next_config": 1,
+    "pattern_static_export": 1,
+    "robots_handler": 1,
+    "sitemap_handler": 1,
+    "page_project_detail": 1,
+    "site_siteconfig": 1,
+    "projects_data": 1,
+    "page_about": 1,
+    "page_home": 1,
+    "component_footer": 1,
+    "page_cv": 1,
+    "layout_root": 1,
+    "component_navbar": 1,
+    "page_projects": 1,
+    "skills_experience": 1,
+    "skills_skillcategories": 1,
+    "component_projectcard": 1,
+    "component_heroavatar": 1,
+    "component_reveal": 1,
+    "utils_cn": 1,
+    "projects_project_interface": 1,
+    "robots": 2,
+    "robots_robots": 2,
+    "site": 2,
+    "footer": 2,
+    "nav_bar": 2,
+    "layout": 2,
+    "page": 2,
+    "sitemap": 2,
+    "footer_footer": 2,
+    "nav_bar_navbar": 2,
+    "layout_rootlayout": 2,
+    "hero_avatar": 2,
+    "project_card": 2,
+    "page_generatestaticparams": 2,
+    "skills": 2,
+    "projects": 2,
+    "reveal": 2,
+    "page_generatemetadata": 2,
+    "sitemap_sitemap": 2,
+    "hero_avatar_r2": 2,
+    "hero_avatar_handletouchoutside": 2,
+    "project_card_projectcard": 2,
+    "projects_getprojectbyslug": 2,
+    "projects_getfeaturedprojects": 2,
+    "reveal_reveal": 2,
+    "not_found": 3,
+    "not_found_notfound": 3,
+    "index": 4,
+    "index_cn": 4,
+    "page_notfound": 5,
+    "readme_project_overview": 6,
+    "photo_diego": 6,
+    "cv_pdf": 6,
+    "readme_project_structure": 6,
+    "readme_tech_stack": 7,
+    "readme_deployment": 7,
+    "logo_vercel": 7,
+    "logo_nextjs": 7,
+    "icon_file": 8,
+    "icon_globe": 9,
+    "icon_window": 9
+  }
+}
