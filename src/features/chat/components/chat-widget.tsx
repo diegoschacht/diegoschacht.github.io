@@ -348,7 +348,12 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[400px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border/40 bg-background/60 backdrop-blur-xl shadow-2xl"
+            className={cn(
+              "fixed bottom-24 right-6 z-50 flex h-[550px] w-[400px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl bg-background/60 backdrop-blur-xl",
+              stage === "error" || stage === "unsupported"
+                ? "shadow-[0_0_20px_rgba(59,130,246,0.15),0_0_0_1px_rgba(59,130,246,0.5)]"
+                : "border border-border/40 shadow-2xl"
+            )}
           >
             {/* Unsupported — no WebGPU */}
             {stage === "unsupported" && (
