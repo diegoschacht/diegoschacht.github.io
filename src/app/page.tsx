@@ -14,6 +14,7 @@ import {
 import Reveal from "@/features/common/components/reveal";
 import HeroAvatar from "@/features/home/components/hero-avatar";
 import TypingRoles from "@/features/home/components/typing-roles";
+import TypewriterOnce from "@/features/home/components/typewriter-once";
 import ProjectCard from "@/features/common/components/project-card";
 import HudButton from "@/features/common/components/hud-button";
 import { siteConfig } from "@/features/common/data/site";
@@ -54,9 +55,7 @@ export default function Home() {
             <Reveal delay={0.2}>
               <div className="mb-6 flex flex-col items-center gap-2 lg:items-start">
                 <TypingRoles />
-                <span className="inline-block border-l-2 border-accent bg-accent/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground uppercase">
-                  AI for Enterprise CX
-                </span>
+                <TypewriterOnce text="Engineering the AI Stack" speed={60} delay={1200} />
               </div>
             </Reveal>
 
