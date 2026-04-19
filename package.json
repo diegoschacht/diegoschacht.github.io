@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.1.0",
+    "@streamdown/cjk": "^1.0.3",
+    "@streamdown/code": "^1.1.1",
+    "@streamdown/math": "^1.0.2",
+    "@streamdown/mermaid": "^1.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
@@ -16,6 +21,7 @@
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "streamdown": "^2.5.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

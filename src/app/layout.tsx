@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import NavBar from "@/features/common/components/nav-bar";
 import Footer from "@/features/common/components/footer";
+import ChatWidget from "@/features/chat/components/chat-widget";
 import { siteConfig } from "@/features/common/data/site";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <NavBar />
         <main className="min-h-[calc(100vh-8rem)]">{children}</main>
         <Footer />
+        <ChatWidget />
       </body>
     </html>
   );
