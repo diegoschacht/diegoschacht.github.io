@@ -65,6 +65,10 @@ export default function ChatWidget() {
       workerRef.current.addEventListener("message", (e) => {
         const d = e.data;
         switch (d.status) {
+          case "unsupported":
+            setStage("unsupported");
+            setIsOpen(true);
+            break;
           case "progress_total":
             setLoadProgress(d.progress);
             setLoadLoaded(d.loaded);
@@ -133,22 +137,8 @@ export default function ChatWidget() {
     return workerRef.current;
   }, []);
 
-  const handleBubbleClick = async () => {
+  const handleBubbleClick = () => {
     if (stage === "idle") {
-      // Probe WebGPU properly: check navigator.gpu and requestAdapter()
-      try {
-        const gpu = (navigator as unknown as { gpu?: { requestAdapter: () => Promise<unknown> } }).gpu;
-        const adapter = gpu ? await gpu.requestAdapter() : null;
-        if (!adapter) {
-          setStage("unsupported");
-          setIsOpen(true);
-          return;
-        }
-      } catch {
-        setStage("unsupported");
-        setIsOpen(true);
-        return;
-      }
       setStage("loading");
       setLoadProgress(0);
       const worker = getWorker();
@@ -364,9 +354,8 @@ export default function ChatWidget() {
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   This AI assistant runs a language model directly in your
-                  browser using WebGPU, which isn&apos;t available on this
-                  device. Try again from a laptop or desktop with Chrome, Edge,
-                  Safari, or a recent version of Firefox.
+                  browser using WebGPU. It requires a laptop or desktop with
+                  Chrome, Edge, Safari, or a recent version of Firefox.
                 </p>
               </div>
             )}

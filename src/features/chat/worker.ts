@@ -36,7 +36,23 @@ function disposePastKeyValues() {
 }
 
 async function load() {
-  console.log("[chat-worker] Starting model load...");
+  // Probe WebGPU inside the worker before downloading anything
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const gpu = (navigator as any).gpu;
+    const adapter = gpu ? await gpu.requestAdapter() : null;
+    if (!adapter) {
+      console.log("[chat-worker] WebGPU not available");
+      self.postMessage({ status: "unsupported" });
+      return;
+    }
+  } catch {
+    console.log("[chat-worker] WebGPU probe failed");
+    self.postMessage({ status: "unsupported" });
+    return;
+  }
+
+  console.log("[chat-worker] WebGPU available, starting model load...");
   self.postMessage({ status: "loading", data: "Loading model..." });
 
   try {
