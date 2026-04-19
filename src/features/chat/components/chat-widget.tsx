@@ -312,7 +312,7 @@ export default function ChatWidget() {
           ) : isOpen ? (
             <X className="relative z-10 h-6 w-6 text-accent" />
           ) : (
-            <Sparkles className="relative z-10 h-6 w-6 text-accent group-hover:text-white transition-colors animate-sparkle-pulse" />
+            <Sparkles className="relative z-10 h-6 w-6 text-white group-hover:text-white transition-colors animate-sparkle-pulse" />
           )}
         </button>
 
