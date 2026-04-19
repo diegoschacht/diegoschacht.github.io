@@ -35,18 +35,6 @@ function disposePastKeyValues() {
   pastKeyValuesCache = null;
 }
 
-async function check() {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const adapter = await (navigator as any).gpu?.requestAdapter();
-    if (!adapter)
-      throw new Error("WebGPU is not supported (no adapter found)");
-    self.postMessage({ status: "supported" });
-  } catch (e) {
-    self.postMessage({ status: "error", data: String(e) });
-  }
-}
-
 async function load() {
   console.log("[chat-worker] Starting model load...");
   self.postMessage({ status: "loading", data: "Loading model..." });
@@ -151,9 +139,6 @@ async function generate(messages: ChatMessage[]) {
 self.addEventListener("message", async (e: MessageEvent) => {
   const { type, data } = e.data;
   switch (type) {
-    case "check":
-      check();
-      break;
     case "load":
       load();
       break;

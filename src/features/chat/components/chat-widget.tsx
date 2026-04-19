@@ -65,8 +65,6 @@ export default function ChatWidget() {
       workerRef.current.addEventListener("message", (e) => {
         const d = e.data;
         switch (d.status) {
-          case "supported":
-            break;
           case "progress_total":
             setLoadProgress(d.progress);
             setLoadLoaded(d.loaded);
@@ -135,10 +133,18 @@ export default function ChatWidget() {
     return workerRef.current;
   }, []);
 
-  const handleBubbleClick = () => {
+  const handleBubbleClick = async () => {
     if (stage === "idle") {
-      // Check WebGPU support, then start loading
-      if (!(navigator as unknown as { gpu?: unknown }).gpu) {
+      // Probe WebGPU properly: check navigator.gpu and requestAdapter()
+      try {
+        const gpu = (navigator as unknown as { gpu?: { requestAdapter: () => Promise<unknown> } }).gpu;
+        const adapter = gpu ? await gpu.requestAdapter() : null;
+        if (!adapter) {
+          setStage("unsupported");
+          setIsOpen(true);
+          return;
+        }
+      } catch {
         setStage("unsupported");
         setIsOpen(true);
         return;
@@ -344,16 +350,18 @@ export default function ChatWidget() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[400px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border/40 bg-background/60 backdrop-blur-xl shadow-2xl"
           >
-            {/* Unsupported state */}
+            {/* Unsupported — no WebGPU */}
             {stage === "unsupported" && (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
-                <div className="text-4xl">⚠️</div>
+                <div className="text-4xl">💻</div>
                 <h3 className="text-lg font-semibold text-foreground">
-                  WebGPU Not Supported
+                  Desktop Required
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  This AI assistant requires WebGPU, which is available in
-                  Chrome 113+, Edge 113+, and recent Firefox builds.
+                  This AI assistant runs a language model directly in your
+                  browser using WebGPU, which isn&apos;t available on this
+                  device. Try again from a laptop or desktop with Chrome, Edge,
+                  Safari, or a recent version of Firefox.
                 </p>
               </div>
             )}
