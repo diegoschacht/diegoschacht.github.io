@@ -516,19 +516,19 @@ export default function ChatWidget() {
                   {isStreaming || isThinking ? (
                     <button
                       onClick={interruptGeneration}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground hover:bg-muted/80 transition-colors"
+                      className="group/hud relative flex h-10 w-10 shrink-0 items-center justify-center rounded-md overflow-hidden bg-transparent text-muted-foreground transition-all duration-300 ease-out shadow-[0_0_0_1px_rgba(59,130,246,0.2)] hover:shadow-[0_0_16px_rgba(59,130,246,0.2),0_0_0_1px_rgba(59,130,246,0.5)] hover:text-accent active:scale-[0.98]"
                       aria-label="Stop generating"
                     >
-                      <Square className="h-4 w-4" />
+                      <Square className="relative z-10 h-4 w-4" />
                     </button>
                   ) : (
                     <button
                       onClick={() => sendMessage(input)}
                       disabled={!input.trim()}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="group/hud relative flex h-10 w-10 shrink-0 items-center justify-center rounded-md overflow-hidden bg-transparent text-accent font-medium transition-all duration-300 ease-out shadow-[0_0_10px_rgba(59,130,246,0.15),0_0_0_1px_rgba(59,130,246,0.5)] hover:shadow-[0_0_24px_rgba(59,130,246,0.35),0_0_0_1px_rgba(59,130,246,0.8)] hover:text-accent-foreground active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-[0_0_10px_rgba(59,130,246,0.15),0_0_0_1px_rgba(59,130,246,0.5)]"
                       aria-label="Send message"
                     >
-                      <Send className="h-4 w-4" />
+                      <Send className="relative z-10 h-4 w-4" />
                     </button>
                   )}
                 </div>
