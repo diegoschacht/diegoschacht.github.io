@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, RotateCcw, Send, Square } from "lucide-react";
+import { Sparkles, X, RotateCcw, Send, Square } from "lucide-react";
 import { cn } from "@/features/utils";
 import { SYSTEM_PROMPT } from "@/features/chat/data/system-prompt";
 
@@ -108,8 +108,10 @@ export default function ChatWidget() {
           case "update":
             if (d.tps != null) setTps(d.tps);
             setMessages((m) => {
+              if (m.length === 0) return m;
               const copy = [...m];
               const last = copy[copy.length - 1];
+              if (!last || last.role !== "assistant") return m;
               copy[copy.length - 1] = {
                 ...last,
                 content: last.content + d.output,
@@ -179,6 +181,7 @@ export default function ChatWidget() {
   };
 
   const resetChat = () => {
+    getWorker().postMessage({ type: "interrupt" });
     setInput("");
     setMessages([]);
     messagesHistoryRef.current = [];
@@ -250,10 +253,10 @@ export default function ChatWidget() {
         <button
           onClick={handleBubbleClick}
           className={cn(
-            "relative flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300",
+            "group relative flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 bg-background/60 backdrop-blur-xl",
             stage === "loading"
-              ? "bg-card cursor-wait"
-              : "bg-accent hover:bg-accent/90 cursor-pointer hover:scale-105"
+              ? "cursor-wait shadow-[0_0_0_1px_rgba(59,130,246,0.3)]"
+              : "shadow-[0_0_10px_rgba(59,130,246,0.15),0_0_0_1px_rgba(59,130,246,0.5)] hover:shadow-[0_0_24px_rgba(59,130,246,0.35),0_0_0_1px_rgba(59,130,246,0.8)] cursor-pointer hover:scale-105"
           )}
           aria-label={
             stage === "loading"
@@ -311,9 +314,9 @@ export default function ChatWidget() {
               {Math.round(loadProgress)}%
             </span>
           ) : isOpen ? (
-            <X className="relative z-10 h-6 w-6 text-accent-foreground" />
+            <X className="relative z-10 h-6 w-6 text-accent" />
           ) : (
-            <MessageCircle className="relative z-10 h-6 w-6 text-accent-foreground" />
+            <Sparkles className="relative z-10 h-6 w-6 text-accent group-hover:text-white transition-colors animate-sparkle-pulse" />
           )}
         </button>
 
@@ -339,7 +342,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[400px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border/40 bg-card shadow-2xl"
+            className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[400px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border/40 bg-background/60 backdrop-blur-xl shadow-2xl"
           >
             {/* Unsupported state */}
             {stage === "unsupported" && (
@@ -422,7 +425,7 @@ export default function ChatWidget() {
                 >
                   {messages.length === 0 && !isThinking ? (
                     <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
-                      <MessageCircle className="h-10 w-10 text-accent/50" />
+                      <Sparkles className="h-10 w-10 text-accent/50 animate-sparkle-pulse" />
                       <div>
                         <p className="text-sm font-medium text-foreground mb-1">
                           Ask me anything about Diego
@@ -486,25 +489,12 @@ export default function ChatWidget() {
                           <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
                             Bonsai 1.7B
                           </span>
-                          <div className="rounded-lg px-3 py-2 text-sm bg-muted/50 border border-border/40 rounded-bl-sm flex items-center gap-2 text-muted-foreground">
-                            <span>Processing</span>
-                            <span className="flex gap-0.5">
-                              {[0, 1, 2].map((i) => (
-                                <span
-                                  key={i}
-                                  className="inline-block h-1 w-1 rounded-full bg-accent animate-bounce"
-                                  style={{
-                                    animationDelay: `${i * 0.15}s`,
-                                    animationDuration: "0.6s",
-                                  }}
-                                />
-                              ))}
+                          <div className="relative rounded-lg px-3 py-2.5 text-sm rounded-bl-sm flex items-center gap-3 text-muted-foreground border border-accent/30 animate-hud-glow-border">
+                            <Sparkles className="h-4 w-4 text-accent animate-sparkle-pulse shrink-0" />
+                            <span className="text-xs">Thinking</span>
+                            <span className="text-[10px] font-mono text-muted-foreground/60 tabular-nums">
+                              {thinkingElapsed}s
                             </span>
-                            {thinkingElapsed > 0 && (
-                              <span className="text-[10px] font-mono text-muted-foreground/70 ml-1">
-                                {thinkingElapsed}s
-                              </span>
-                            )}
                           </div>
                         </div>
                       )}

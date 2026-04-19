@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import HudButton from "@/features/common/components/hud-button";
 import { projects, getProjectBySlug } from "@/features/projects/data/projects";
 
 interface PageProps {
@@ -74,26 +75,16 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         {/* Links */}
         <div className="flex gap-4">
           {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-            >
+            <HudButton as="a" href={project.liveUrl} target="_blank" rel="noopener noreferrer" size="sm">
               <ExternalLink className="h-4 w-4" />
               Live Demo
-            </a>
+            </HudButton>
           )}
           {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-            >
+            <HudButton as="a" href={project.repoUrl} target="_blank" rel="noopener noreferrer" variant="outline" size="sm">
               <Github className="h-4 w-4" />
               Repository
-            </a>
+            </HudButton>
           )}
         </div>
       </header>

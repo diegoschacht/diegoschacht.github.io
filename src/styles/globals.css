@@ -39,6 +39,52 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sparkles icon breathing pulse */
+@keyframes sparkle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@utility animate-sparkle-pulse {
+  animation: sparkle-pulse 2s ease-in-out infinite;
+}
+
+/* HUD equalizer bars for thinking state */
+@keyframes hud-bar {
+  0%, 100% {
+    transform: scaleY(0.3);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@utility animate-hud-bar {
+  animation: hud-bar 0.8s ease-in-out infinite;
+}
+
+/* HUD glowing border pulse for thinking state */
+@keyframes hud-glow-border {
+  0%, 100% {
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.05);
+  }
+  50% {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@utility animate-hud-glow-border {
+  animation: hud-glow-border 2s ease-in-out infinite;
+}
+
 /* Subtle scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

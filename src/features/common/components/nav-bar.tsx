@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/features/utils";
+import HudButton from "@/features/common/components/hud-button";
 import { siteConfig } from "@/features/common/data/site";
 
 export default function NavBar() {
@@ -39,12 +40,9 @@ export default function NavBar() {
             </li>
           ))}
           <li>
-            <Link
-              href="/#contact"
-              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-            >
+            <HudButton href="/#contact" size="sm">
               Contact
-            </Link>
+            </HudButton>
           </li>
         </ul>
 
@@ -79,13 +77,9 @@ export default function NavBar() {
               </li>
             ))}
             <li>
-              <Link
-                href="/#contact"
-                onClick={() => setOpen(false)}
-                className="inline-block rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
-              >
+              <HudButton href="/#contact" size="sm" onClick={() => setOpen(false)}>
                 Contact
-              </Link>
+              </HudButton>
             </li>
           </ul>
         </div>

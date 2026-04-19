@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Download, Github, Linkedin, ArrowRight } from "lucide-react";
+import HudButton from "@/features/common/components/hud-button";
 import { siteConfig } from "@/features/common/data/site";
 import { experience } from "@/features/common/data/skills";
 import { skillCategories } from "@/features/common/data/skills";
@@ -21,14 +21,10 @@ export default function CVPage() {
           </h1>
           <p className="text-lg text-muted-foreground">{siteConfig.role}</p>
         </div>
-        <a
-          href="/diego-schacht-cv.pdf"
-          download
-          className="inline-flex items-center gap-2 shrink-0 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-        >
+        <HudButton as="a" href="/diego-schacht-cv.pdf" download className="shrink-0">
           <Download className="h-4 w-4" />
           Download PDF
-        </a>
+        </HudButton>
       </div>
 
       {/* Contact Info */}
@@ -118,19 +114,13 @@ export default function CVPage() {
           Interested in working together?
         </p>
         <div className="flex flex-wrap gap-4">
-          <Link
-            href="/#contact"
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-          >
+          <HudButton href="/#contact">
             Get in touch
             <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 rounded-md border border-border px-5 py-3 text-sm font-medium transition-colors hover:bg-muted"
-          >
+          </HudButton>
+          <HudButton href="/projects" variant="outline">
             View my work
-          </Link>
+          </HudButton>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import HudButton from "@/features/common/components/hud-button";
 import { siteConfig } from "@/features/common/data/site";
 import { skillCategories } from "@/features/common/data/skills";
 import { experience } from "@/features/common/data/skills";
@@ -158,19 +158,13 @@ export default function AboutPage() {
           projects, or potential collaborations.
         </p>
         <div className="flex flex-wrap gap-4">
-          <Link
-            href="/#contact"
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-          >
+          <HudButton href="/#contact">
             Get in touch
             <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="/cv"
-            className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-muted"
-          >
+          </HudButton>
+          <HudButton href="/cv" variant="outline">
             View my CV
-          </Link>
+          </HudButton>
         </div>
       </div>
     </div>

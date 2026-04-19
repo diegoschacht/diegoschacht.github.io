@@ -13,7 +13,9 @@ import {
 } from "lucide-react";
 import Reveal from "@/features/common/components/reveal";
 import HeroAvatar from "@/features/home/components/hero-avatar";
+import TypingRoles from "@/features/home/components/typing-roles";
 import ProjectCard from "@/features/common/components/project-card";
+import HudButton from "@/features/common/components/hud-button";
 import { siteConfig } from "@/features/common/data/site";
 import { getFeaturedProjects } from "@/features/projects/data/projects";
 import { skillCategories } from "@/features/common/data/skills";
@@ -51,9 +53,7 @@ export default function Home() {
 
             <Reveal delay={0.2}>
               <div className="mb-6 flex flex-col items-center gap-2 lg:items-start">
-                <span className="inline-block border-l-2 border-accent bg-accent/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground uppercase">
-                  Full-Stack Software Engineer
-                </span>
+                <TypingRoles />
                 <span className="inline-block border-l-2 border-accent bg-accent/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground uppercase">
                   AI for Enterprise CX
                 </span>
@@ -68,12 +68,9 @@ export default function Home() {
 
             <Reveal delay={0.4}>
               <div className="mt-10 flex justify-center lg:justify-start">
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3 text-sm font-semibold tracking-wide text-accent-foreground uppercase transition-colors hover:bg-accent/90"
-                >
+                <HudButton href="/about" size="lg" className="rounded-full uppercase tracking-wide font-semibold">
                   More About Me
-                </Link>
+                </HudButton>
               </div>
             </Reveal>
           </div>
@@ -237,24 +234,25 @@ export default function Home() {
 
           <Reveal delay={0.1}>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
+              <HudButton
+                as="a"
                 href={siteConfig.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
               >
                 <Linkedin className="h-4 w-4" />
                 LinkedIn
-              </a>
-              <a
+              </HudButton>
+              <HudButton
+                as="a"
                 href={siteConfig.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-muted"
+                variant="outline"
               >
                 <Github className="h-4 w-4" />
                 GitHub
-              </a>
+              </HudButton>
             </div>
           </Reveal>
         </div>

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import HudButton from "@/features/common/components/hud-button";
 
 export default function NotFound() {
   return (
@@ -13,13 +13,10 @@ export default function NotFound() {
       <p className="mb-8 text-muted-foreground">
         The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-      >
+      <HudButton href="/">
         <ArrowLeft className="h-4 w-4" />
         Back to Home
-      </Link>
+      </HudButton>
     </div>
   );
 }
