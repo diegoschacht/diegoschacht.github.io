@@ -36,13 +36,28 @@ function disposePastKeyValues() {
 }
 
 async function load() {
-  // Probe WebGPU inside the worker before downloading anything
+  // Probe WebGPU capability before downloading anything
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const gpu = (navigator as any).gpu;
     const adapter = gpu ? await gpu.requestAdapter() : null;
     if (!adapter) {
-      console.log("[chat-worker] WebGPU not available");
+      console.log("[chat-worker] WebGPU not available (no adapter)");
+      self.postMessage({ status: "unsupported" });
+      return;
+    }
+
+    // Verify the adapter can handle LLM workloads:
+    // - Need at least 256MB max buffer size for model weights
+    // - Reject mobile devices where WebGPU exists but compute is unreliable
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const maxBufferSize = adapter.limits?.maxBufferSize ?? 0;
+    const maxStorageSize = adapter.limits?.maxStorageBufferBindingSize ?? 0;
+
+    console.log(`[chat-worker] WebGPU probe: mobile=${isMobile}, maxBuffer=${maxBufferSize}, maxStorage=${maxStorageSize}`);
+
+    if (isMobile || maxBufferSize < 256 * 1024 * 1024) {
+      console.log("[chat-worker] Device not capable of LLM inference");
       self.postMessage({ status: "unsupported" });
       return;
     }
