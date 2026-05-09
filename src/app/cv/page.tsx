@@ -111,11 +111,11 @@ export default function CVPage() {
       {/* CTA */}
       <div className="border-t border-border/40 pt-8">
         <p className="mb-4 text-muted-foreground">
-          Interested in working together?
+          Want to connect?
         </p>
         <div className="flex flex-wrap gap-4">
           <HudButton href="/#contact">
-            Get in touch
+            Say hi
             <ArrowRight className="h-4 w-4" />
           </HudButton>
           <HudButton href="/projects" variant="outline">

@@ -13,7 +13,7 @@ export const siteConfig = {
   subheadline:
     "I build modern product experiences and platform capabilities across frontend and backend systems, with a current focus on AI agents, tools, and skills for enterprise customer experience.",
   shortBio:
-    "I'm a full-stack software engineer focused on building products that turn complex systems into usable, real-world value. My background spans cloud platforms, backend systems, and modern web development. Today, I work at NiCE Cognigy on the next generation of an AI-first customer experience platform, with a strong focus on AI agents, tools, and skills.",
+    "I'm a full-stack software engineer turning complex systems into usable products. My background spans cloud platforms, backend systems, and modern web development. Today, I work at NiCE Cognigy on the next generation of an AI-first customer experience platform — currently shipping AI agents, tools, and skills.",
   navLinks: [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },

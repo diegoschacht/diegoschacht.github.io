@@ -220,14 +220,13 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-24 text-center">
           <Reveal>
             <p className="mb-2 text-sm font-medium tracking-wider text-accent uppercase">
-              Get in Touch
+              Connect
             </p>
             <h2 className="mb-4 text-3xl font-bold tracking-tight">
-              Interested in working together?
+              Say hi
             </h2>
             <p className="mx-auto mb-10 max-w-lg text-muted-foreground">
-              Whether you want to talk about a product, role, or collaboration
-              — I&apos;d love to hear from you.
+              Always happy to chat about CX, AI, or engineering.
             </p>
           </Reveal>
 

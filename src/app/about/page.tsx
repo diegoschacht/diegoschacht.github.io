@@ -151,15 +151,14 @@ export default function AboutPage() {
       {/* CTA */}
       <div className="rounded-xl border border-border/40 bg-card p-8">
         <h2 className="mb-2 text-xl font-semibold tracking-tight">
-          Want to work together?
+          Let&apos;s connect
         </h2>
         <p className="mb-6 text-muted-foreground">
-          I&apos;m always open to discussing new opportunities, interesting
-          projects, or potential collaborations.
+          Happy to trade notes on AI in CX, or just say hi.
         </p>
         <div className="flex flex-wrap gap-4">
           <HudButton href="/#contact">
-            Get in touch
+            Say hi
             <ArrowRight className="h-4 w-4" />
           </HudButton>
           <HudButton href="/cv" variant="outline">
